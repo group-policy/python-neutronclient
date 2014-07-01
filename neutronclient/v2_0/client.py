@@ -229,6 +229,14 @@ class Client(object):
     firewall_path = "/fw/firewalls/%s"
     net_partitions_path = "/net-partitions"
     net_partition_path = "/net-partitions/%s"
+    endpoints_path = "/grouppolicy/endpoints"
+    endpoint_path = "/grouppolicy/endpoints/%s"
+    endpoint_groups_path = "/grouppolicy/endpoint_groups"
+    endpoint_group_path = "/grouppolicy/endpoint_groups/%s"
+    l2_policies_path = "/grouppolicy/l2_policies"
+    l2_policy_path = "/grouppolicy/l2_policies/%s"
+    l3_policies_path = "/grouppolicy/l3_policies"
+    l3_policy_path = "/grouppolicy/l3_policies/%s"
 
     # API has no way to report plurals, so we have to hard code them
     EXTED_PLURALS = {'routers': 'router',
@@ -254,6 +262,10 @@ class Client(object):
                      'metering_label_rules': 'metering_label_rule',
                      'net_partitions': 'net_partition',
                      'packet_filters': 'packet_filter',
+                     'endpoints': 'endpoint',
+                     'endpoint_groups': 'endpoint_group',
+                     'l2_policies': 'l2_policy',
+                     'l3_policies': 'l3_policy',
                      }
     # 8192 Is the default max URI len for eventlet.wsgi.server
     MAX_URI_LEN = 8192
@@ -1194,6 +1206,119 @@ class Client(object):
     def delete_packet_filter(self, packet_filter_id):
         """Delete the specified packet filter."""
         return self.delete(self.packet_filter_path % packet_filter_id)
+
+    @APIParamsCall
+    def list_endpoints(self, retrieve_all=True, **_params):
+        """Fetches a list of all endpoints for a tenant."""
+        # Pass filters in "params" argument to do_request
+        return self.list('endpoints', self.endpoints_path, retrieve_all,
+                         **_params)
+
+    @APIParamsCall
+    def show_endpoint(self, endpoint, **_params):
+        """Fetches information of a certain endpoint."""
+        return self.get(self.endpoint_path % (endpoint), params=_params)
+
+    @APIParamsCall
+    def create_endpoint(self, body=None):
+        """Creates a new endpoint."""
+        return self.post(self.endpoints_path, body=body)
+
+    @APIParamsCall
+    def update_endpoint(self, endpoint, body=None):
+        """Updates a endpoint."""
+        return self.put(self.endpoint_path % (endpoint), body=body)
+
+    @APIParamsCall
+    def delete_endpoint(self, endpoint):
+        """Deletes the specified endpoint."""
+        return self.delete(self.endpoint_path % (endpoint))
+
+    @APIParamsCall
+    def list_endpoint_groups(self, retrieve_all=True, **_params):
+        """Fetches a list of all endpoint_groups for a tenant."""
+        # Pass filters in "params" argument to do_request
+        return self.list('endpoint_groups', self.endpoint_groups_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_endpoint_group(self, endpoint_group, **_params):
+        """Fetches information of a certain endpoint_group."""
+        return self.get(self.endpoint_group_path % (endpoint_group),
+                        params=_params)
+
+    @APIParamsCall
+    def create_endpoint_group(self, body=None):
+        """Creates a new endpoint_group."""
+        return self.post(self.endpoint_groups_path, body=body)
+
+    @APIParamsCall
+    def update_endpoint_group(self, endpoint_group, body=None):
+        """Updates a endpoint_group."""
+        return self.put(self.endpoint_group_path % (endpoint_group),
+                        body=body)
+
+    @APIParamsCall
+    def delete_endpoint_group(self, endpoint_group):
+        """Deletes the specified endpoint_group."""
+        return self.delete(self.endpoint_group_path % (endpoint_group))
+
+    @APIParamsCall
+    def list_l2_policies(self, retrieve_all=True, **_params):
+        """Fetches a list of all l2_policies for a tenant."""
+        # Pass filters in "params" argument to do_request
+        return self.list('l2_policies', self.l2_policies_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_l2_policy(self, l2_policy, **_params):
+        """Fetches information of a certain l2_policy."""
+        return self.get(self.l2_policy_path % (l2_policy),
+                        params=_params)
+
+    @APIParamsCall
+    def create_l2_policy(self, body=None):
+        """Creates a new l2_policy."""
+        return self.post(self.l2_policies_path, body=body)
+
+    @APIParamsCall
+    def update_l2_policy(self, l2_policy, body=None):
+        """Updates a l2_policy."""
+        return self.put(self.l2_policy_path % (l2_policy), body=body)
+
+    @APIParamsCall
+    def delete_l2_policy(self, l2_policy):
+        """Deletes the specified l2_policy."""
+        return self.delete(self.l2_policy_path % (l2_policy))
+
+    @APIParamsCall
+    def list_l3_policies(self, retrieve_all=True, **_params):
+        """Fetches a list of all l3_policies for a tenant."""
+        # Pass filters in "params" argument to do_request
+        return self.list('l3_policies', self.l3_policies_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_l3_policy(self, l3_policy, **_params):
+        """Fetches information of a certain l3_policy."""
+        return self.get(self.l3_policy_path % (l3_policy),
+                        params=_params)
+
+    @APIParamsCall
+    def create_l3_policy(self, body=None):
+        """Creates a new l3_policy."""
+        return self.post(self.l3_policies_path, body=body)
+
+    @APIParamsCall
+    def update_l3_policy(self, l3_policy, body=None):
+        """Updates a l3_policy."""
+        return self.put(self.l3_policy_path % (l3_policy),
+                        body=body)
+
+    @APIParamsCall
+    def delete_l3_policy(self, l3_policy):
+        """Deletes the specified l3_policy."""
+        return self.delete(self.l3_policy_path % (l3_policy))
 
     def __init__(self, **kwargs):
         """Initialize a new client for the Neutron v2.0 API."""

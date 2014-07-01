@@ -46,6 +46,7 @@ from neutronclient.neutron.v2_0 import floatingip
 from neutronclient.neutron.v2_0.fw import firewall
 from neutronclient.neutron.v2_0.fw import firewallpolicy
 from neutronclient.neutron.v2_0.fw import firewallrule
+from neutronclient.neutron.v2_0 import grouppolicy
 from neutronclient.neutron.v2_0.lb import healthmonitor as lb_healthmonitor
 from neutronclient.neutron.v2_0.lb import member as lb_member
 from neutronclient.neutron.v2_0.lb import pool as lb_pool
@@ -295,6 +296,26 @@ COMMAND_V2 = {
     'nec-packet-filter-create': packetfilter.CreatePacketFilter,
     'nec-packet-filter-update': packetfilter.UpdatePacketFilter,
     'nec-packet-filter-delete': packetfilter.DeletePacketFilter,
+    'grouppolicy-endpoint-create': grouppolicy.CreateEndpoint,
+    'grouppolicy-endpoint-delete': grouppolicy.DeleteEndpoint,
+    'grouppolicy-endpoint-update': grouppolicy.UpdateEndpoint,
+    'grouppolicy-endpoint-list': grouppolicy.ListEndpoint,
+    'grouppolicy-endpoint-show': grouppolicy.ShowEndpoint,
+    'grouppolicy-endpoint-group-create': grouppolicy.CreateEndpointGroup,
+    'grouppolicy-endpoint-group-delete': grouppolicy.DeleteEndpointGroup,
+    'grouppolicy-endpoint-group-update': grouppolicy.UpdateEndpointGroup,
+    'grouppolicy-endpoint-group-list': grouppolicy.ListEndpointGroup,
+    'grouppolicy-endpoint-group-show': grouppolicy.ShowEndpointGroup,
+    'grouppolicy-l2policy-create': grouppolicy.CreateL2Policy,
+    'grouppolicy-l2policy-delete': grouppolicy.DeleteL2Policy,
+    'grouppolicy-l2policy-update': grouppolicy.UpdateL2Policy,
+    'grouppolicy-l2policy-list': grouppolicy.ListL2Policy,
+    'grouppolicy-l2policy-show': grouppolicy.ShowL2Policy,
+    'grouppolicy-l3policy-create': grouppolicy.CreateL3Policy,
+    'grouppolicy-l3policy-delete': grouppolicy.DeleteL3Policy,
+    'grouppolicy-l3policy-update': grouppolicy.UpdateL3Policy,
+    'grouppolicy-l3policy-list': grouppolicy.ListL3Policy,
+    'grouppolicy-l3policy-show': grouppolicy.ShowL3Policy,
 }
 
 COMMANDS = {'2.0': COMMAND_V2}
