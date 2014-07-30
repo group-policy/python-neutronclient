@@ -316,6 +316,21 @@ COMMAND_V2 = {
     'grouppolicy-l3policy-update': grouppolicy.UpdateL3Policy,
     'grouppolicy-l3policy-list': grouppolicy.ListL3Policy,
     'grouppolicy-l3policy-show': grouppolicy.ShowL3Policy,
+    'grouppolicy-policy-classifier-create': grouppolicy.CreatePolicyClassifier,
+    'grouppolicy-policy-classifier-delete': grouppolicy.DeletePolicyClassifier,
+    'grouppolicy-policy-classifier-update': grouppolicy.UpdatePolicyClassifier,
+    'grouppolicy-policy-classifier-list': grouppolicy.ListPolicyClassifier,
+    'grouppolicy-policy-classifier-show': grouppolicy.ShowPolicyClassifier,
+    'grouppolicy-policy-action-create': grouppolicy.CreatePolicyAction,
+    'grouppolicy-policy-action-delete': grouppolicy.DeletePolicyAction,
+    'grouppolicy-policy-action-update': grouppolicy.UpdatePolicyAction,
+    'grouppolicy-policy-action-list': grouppolicy.ListPolicyAction,
+    'grouppolicy-policy-action-show': grouppolicy.ShowPolicyAction,
+    'grouppolicy-policy-rule-create': grouppolicy.CreatePolicyRule,
+    'grouppolicy-policy-rule-delete': grouppolicy.DeletePolicyRule,
+    'grouppolicy-policy-rule-update': grouppolicy.UpdatePolicyRule,
+    'grouppolicy-policy-rule-list': grouppolicy.ListPolicyRule,
+    'grouppolicy-policy-rule-show': grouppolicy.ShowPolicyRule,
 }
 
 COMMANDS = {'2.0': COMMAND_V2}

@@ -391,3 +391,247 @@ class UpdateL3Policy(neutronV20.UpdateCommand):
 
     resource = 'l3_policy'
     log = logging.getLogger(__name__ + '.UpdateL3Policy')
+
+
+class ListPolicyClassifier(neutronV20.ListCommand):
+    """List classifiers that belong to a given tenant."""
+
+    resource = 'policy_classifier'
+    log = logging.getLogger(__name__ + '.ListPolicyClassifier')
+    _formatters = {}
+    list_columns = ['id', 'name', 'protocol', 'port_range', 'direction']
+    pagination_support = True
+    sorting_support = True
+
+
+class ShowPolicyClassifier(neutronV20.ShowCommand):
+    """Show information of a given classifier."""
+
+    resource = 'policy_classifier'
+    log = logging.getLogger(__name__ + '.ShowPolicyClassifier')
+
+
+class CreatePolicyClassifier(neutronV20.CreateCommand):
+    """Create a classifier for a given tenant."""
+
+    resource = 'policy_classifier'
+    log = logging.getLogger(__name__ + '.CreatePolicyClassifier')
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--description',
+            help=_('Description of the policy classifier'))
+        parser.add_argument(
+            '--protocol',
+            choices=['tcp', 'udp', 'icmp'],
+            help=_('Protocol'))
+        parser.add_argument(
+            '--port-range',
+            help=_('Port range'))
+        parser.add_argument(
+            '--direction',
+            choices=['in', 'out', 'bi', ''],
+            help=_('Direction'))
+        parser.add_argument(
+            'name', metavar='NAME',
+            help=_('Name of classifier to create'))
+
+    def args2body(self, parsed_args):
+        body = {self.resource: {}, }
+
+        neutronV20.update_dict(parsed_args, body[self.resource],
+                               ['name', 'tenant_id', 'description',
+                                'protocol', 'port_range', 'direction'])
+
+        return body
+
+
+class DeletePolicyClassifier(neutronV20.DeleteCommand):
+    """Delete a given classifier."""
+
+    resource = 'policy_classifier'
+    log = logging.getLogger(__name__ + '.DeletePolicyClassifier')
+
+
+class UpdatePolicyClassifier(neutronV20.UpdateCommand):
+    """Update classifier's information."""
+
+    resource = 'policy_classifier'
+    log = logging.getLogger(__name__ + '.UpdatePolicyClassifier')
+
+
+class ListPolicyAction(neutronV20.ListCommand):
+    """List actions that belong to a given tenant."""
+
+    resource = 'policy_action'
+    log = logging.getLogger(__name__ + '.ListPolicyAction')
+    _formatters = {}
+    list_columns = ['id', 'name', 'action_type', 'action_value']
+    pagination_support = True
+    sorting_support = True
+
+
+class ShowPolicyAction(neutronV20.ShowCommand):
+    """Show information of a given action."""
+
+    resource = 'policy_action'
+    log = logging.getLogger(__name__ + '.ShowPolicyAction')
+
+
+class CreatePolicyAction(neutronV20.CreateCommand):
+    """Create a action for a given tenant."""
+
+    resource = 'policy_action'
+    log = logging.getLogger(__name__ + '.CreatePolicyAction')
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--description',
+            help=_('Description of the policy action'))
+        parser.add_argument(
+            '--action-type',
+            help=_('Type of action'))
+        parser.add_argument(
+            '--action-value',
+            help=_('uuid of service for redirect action'))
+        parser.add_argument(
+            'name', metavar='NAME',
+            help=_('Name of action to create'))
+
+    def args2body(self, parsed_args):
+        body = {self.resource: {}, }
+
+        neutronV20.update_dict(parsed_args, body[self.resource],
+                               ['name', 'tenant_id', 'description',
+                                'action_type', 'action_value'])
+
+        return body
+
+
+class DeletePolicyAction(neutronV20.DeleteCommand):
+    """Delete a given action."""
+
+    resource = 'policy_action'
+    log = logging.getLogger(__name__ + '.DeletePolicyAction')
+
+
+class UpdatePolicyAction(neutronV20.UpdateCommand):
+    """Update action's information."""
+
+    resource = 'policy_action'
+    log = logging.getLogger(__name__ + '.UpdatePolicyAction')
+
+
+class ListPolicyRule(neutronV20.ListCommand):
+    """List policy_rules that belong to a given tenant."""
+
+    resource = 'policy_rule'
+    log = logging.getLogger(__name__ + '.ListPolicyRule')
+    _formatters = {}
+    list_columns = ['id', 'name', 'enabled', 'classifier_id',
+                    'actions']
+    pagination_support = True
+    sorting_support = True
+
+
+class ShowPolicyRule(neutronV20.ShowCommand):
+    """Show information of a given policy_rule."""
+
+    resource = 'policy_rule'
+    log = logging.getLogger(__name__ + '.ShowPolicyRule')
+
+
+class CreatePolicyRule(neutronV20.CreateCommand):
+    """Create a policy_rule for a given tenant."""
+
+    resource = 'policy_rule'
+    log = logging.getLogger(__name__ + '.CreatePolicyRule')
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--description',
+            help=_('Description of the policy_rule'))
+        parser.add_argument(
+            '--enabled', type=bool,
+            help=_('Enable flag'))
+        parser.add_argument(
+            '--classifier',
+            help=_('uuid of policy classifier'))
+        parser.add_argument(
+            '--actions', type=string.split,
+            #default=[],
+            help=_('List of policy actions'))
+        parser.add_argument(
+            'name', metavar='NAME',
+            help=_('Name of policy_rule to create'))
+
+    def args2body(self, parsed_args):
+        body = {self.resource: {}, }
+
+        if parsed_args.actions:
+            body[self.resource]['policy_actions'] = [
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'policy_action',
+                    elem) for elem in parsed_args.actions]
+
+        if parsed_args.classifier:
+            body[self.resource]['policy_classifier_id'] = \
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'policy_classifier',
+                    parsed_args.classifier)
+
+        neutronV20.update_dict(parsed_args, body[self.resource],
+                               ['name', 'tenant_id', 'description',
+                                'enabled'])
+
+        return body
+
+
+class DeletePolicyRule(neutronV20.DeleteCommand):
+    """Delete a given policy_rule."""
+
+    resource = 'policy_rule'
+    log = logging.getLogger(__name__ + '.DeletePolicyRule')
+
+
+class UpdatePolicyRule(neutronV20.UpdateCommand):
+    """Update policy_rule's information."""
+
+    resource = 'policy_rule'
+    log = logging.getLogger(__name__ + '.UpdatePolicyRule')
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--enabled', type=bool,
+            help=_('Enable flag'))
+        parser.add_argument(
+            '--classifier',
+            help=_('uuid of policy classifier'))
+        parser.add_argument(
+            '--actions', type=string.split,
+            help=_('List of policy actions'))
+
+    def args2body(self, parsed_args):
+        body = {self.resource: {}, }
+
+        if parsed_args.actions:
+            body[self.resource]['policy_actions'] = [
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'policy_action',
+                    elem) for elem in parsed_args.actions]
+
+        if parsed_args.classifier:
+            body[self.resource]['policy_classifier_id'] = \
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'policy_classifier',
+                    parsed_args.classifier)
+
+        neutronV20.update_dict(parsed_args, body[self.resource],
+                               ['name', 'description',
+                                'enabled'])
+
+        return body

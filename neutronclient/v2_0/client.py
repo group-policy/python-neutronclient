@@ -237,6 +237,12 @@ class Client(object):
     l2_policy_path = "/grouppolicy/l2_policies/%s"
     l3_policies_path = "/grouppolicy/l3_policies"
     l3_policy_path = "/grouppolicy/l3_policies/%s"
+    policy_classifiers_path = "/grouppolicy/policy_classifiers"
+    policy_classifier_path = "/grouppolicy/policy_classifiers/%s"
+    policy_actions_path = "/grouppolicy/policy_actions"
+    policy_action_path = "/grouppolicy/policy_actions/%s"
+    policy_rules_path = "/grouppolicy/policy_rules"
+    policy_rule_path = "/grouppolicy/policy_rules/%s"
 
     # API has no way to report plurals, so we have to hard code them
     EXTED_PLURALS = {'routers': 'router',
@@ -266,6 +272,9 @@ class Client(object):
                      'endpoint_groups': 'endpoint_group',
                      'l2_policies': 'l2_policy',
                      'l3_policies': 'l3_policy',
+                     'policy_classifiers': 'policy_classifier',
+                     'policy_actions': 'policy_action',
+                     'policy_rules': 'policy_rule'
                      }
     # 8192 Is the default max URI len for eventlet.wsgi.server
     MAX_URI_LEN = 8192
@@ -1319,6 +1328,90 @@ class Client(object):
     def delete_l3_policy(self, l3_policy):
         """Deletes the specified l3_policy."""
         return self.delete(self.l3_policy_path % (l3_policy))
+
+    @APIParamsCall
+    def list_policy_classifiers(self, retrieve_all=True, **_params):
+        """Fetches a list of all policy_classifiers for a tenant."""
+        # Pass filters in "params" argument to do_request
+        return self.list('policy_classifiers', self.policy_classifiers_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_policy_classifier(self, policy_classifier, **_params):
+        """Fetches information of a certain policy_classifier."""
+        return self.get(self.policy_classifier_path % (policy_classifier),
+                        params=_params)
+
+    @APIParamsCall
+    def create_policy_classifier(self, body=None):
+        """Creates a new policy_classifier."""
+        return self.post(self.policy_classifiers_path, body=body)
+
+    @APIParamsCall
+    def update_policy_classifier(self, policy_classifier, body=None):
+        """Updates a policy_classifier."""
+        return self.put(self.policy_classifier_path % (policy_classifier),
+                        body=body)
+
+    @APIParamsCall
+    def delete_policy_classifier(self, policy_classifier):
+        """Deletes the specified policy_classifier."""
+        return self.delete(self.policy_classifier_path % (policy_classifier))
+
+    @APIParamsCall
+    def list_policy_actions(self, retrieve_all=True, **_params):
+        """Fetches a list of all policy_actions for a tenant."""
+        # Pass filters in "params" argument to do_request
+        return self.list('policy_actions', self.policy_actions_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_policy_action(self, policy_action, **_params):
+        """Fetches information of a certain policy_action."""
+        return self.get(self.policy_action_path % (policy_action),
+                        params=_params)
+
+    @APIParamsCall
+    def create_policy_action(self, body=None):
+        """Creates a new policy_action."""
+        return self.post(self.policy_actions_path, body=body)
+
+    @APIParamsCall
+    def update_policy_action(self, policy_action, body=None):
+        """Updates a policy_action."""
+        return self.put(self.policy_action_path % (policy_action), body=body)
+
+    @APIParamsCall
+    def delete_policy_action(self, policy_action):
+        """Deletes the specified policy_action."""
+        return self.delete(self.policy_action_path % (policy_action))
+
+    @APIParamsCall
+    def list_policy_rules(self, retrieve_all=True, **_params):
+        """Fetches a list of all policy_rules for a tenant."""
+        # Pass filters in "params" argument to do_request
+        return self.list('policy_rules', self.policy_rules_path, retrieve_all,
+                         **_params)
+
+    @APIParamsCall
+    def show_policy_rule(self, policy_rule, **_params):
+        """Fetches information of a certain policy_rule."""
+        return self.get(self.policy_rule_path % (policy_rule), params=_params)
+
+    @APIParamsCall
+    def create_policy_rule(self, body=None):
+        """Creates a new policy_rule."""
+        return self.post(self.policy_rules_path, body=body)
+
+    @APIParamsCall
+    def update_policy_rule(self, policy_rule, body=None):
+        """Updates a policy_rule."""
+        return self.put(self.policy_rule_path % (policy_rule), body=body)
+
+    @APIParamsCall
+    def delete_policy_rule(self, policy_rule):
+        """Deletes the specified policy_rule."""
+        return self.delete(self.policy_rule_path % (policy_rule))
 
     def __init__(self, **kwargs):
         """Initialize a new client for the Neutron v2.0 API."""
