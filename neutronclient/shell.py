@@ -331,6 +331,11 @@ COMMAND_V2 = {
     'grouppolicy-policy-rule-update': grouppolicy.UpdatePolicyRule,
     'grouppolicy-policy-rule-list': grouppolicy.ListPolicyRule,
     'grouppolicy-policy-rule-show': grouppolicy.ShowPolicyRule,
+    'grouppolicy-contract-create': grouppolicy.CreateContract,
+    'grouppolicy-contract-delete': grouppolicy.DeleteContract,
+    'grouppolicy-contract-update': grouppolicy.UpdateContract,
+    'grouppolicy-contract-list': grouppolicy.ListContract,
+    'grouppolicy-contract-show': grouppolicy.ShowContract,
 }
 
 COMMANDS = {'2.0': COMMAND_V2}

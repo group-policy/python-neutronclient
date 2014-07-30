@@ -633,5 +633,105 @@ class UpdatePolicyRule(neutronV20.UpdateCommand):
         neutronV20.update_dict(parsed_args, body[self.resource],
                                ['name', 'description',
                                 'enabled'])
+        return body
+
+
+class ListContract(neutronV20.ListCommand):
+    """List contracts that belong to a given tenant."""
+
+    resource = 'contract'
+    log = logging.getLogger(__name__ + '.ListContract')
+    _formatters = {}
+    list_columns = ['id', 'name', 'ploicy_rules']
+    pagination_support = True
+    sorting_support = True
+
+
+class ShowContract(neutronV20.ShowCommand):
+    """Show information of a given contract."""
+
+    resource = 'contract'
+    log = logging.getLogger(__name__ + '.ShowContract')
+
+
+class CreateContract(neutronV20.CreateCommand):
+    """Create a contract for a given tenant."""
+
+    resource = 'contract'
+    log = logging.getLogger(__name__ + '.CreateContract')
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--description',
+            help=_('Description of the contract'))
+        parser.add_argument(
+            '--policy-rules', type=string.split,
+            help=_('List of policy rules'))
+        parser.add_argument(
+            '--child-contracts', type=string.split,
+            help=_('List of child contracts'))
+        parser.add_argument(
+            'name', metavar='NAME',
+            help=_('Name of contract to create'))
+
+    def args2body(self, parsed_args):
+        body = {self.resource: {}, }
+
+        if parsed_args.policy_rules:
+            body[self.resource]['policy_rules'] = [
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'policy_rule',
+                    elem) for elem in parsed_args.policy_rules]
+
+        if parsed_args.child_contracts:
+            body[self.resource]['child_contracts'] = [
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'contract',
+                    elem) for elem in parsed_args.child_contracts]
+
+        neutronV20.update_dict(parsed_args, body[self.resource],
+                               ['name', 'tenant_id', 'description'])
+        return body
+
+
+class DeleteContract(neutronV20.DeleteCommand):
+    """Delete a given contract."""
+
+    resource = 'contract'
+    log = logging.getLogger(__name__ + '.DeleteContract')
+
+
+class UpdateContract(neutronV20.UpdateCommand):
+    """Update contract's information."""
+
+    resource = 'contract'
+    log = logging.getLogger(__name__ + '.UpdateContract')
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--policy-rules', type=string.split,
+            help=_('List of policy rules'))
+        parser.add_argument(
+            '--child-contracts', type=string.split,
+            help=_('List of child contracts'))
+
+    def args2body(self, parsed_args):
+        body = {self.resource: {}, }
+
+        if parsed_args.policy_rules:
+            body[self.resource]['policy_rules'] = [
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'policy_rule',
+                    elem) for elem in parsed_args.policy_rules]
+
+        if parsed_args.child_contracts:
+            body[self.resource]['child_contracts'] = [
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'contract',
+                    elem) for elem in parsed_args.child_contracts]
 
         return body

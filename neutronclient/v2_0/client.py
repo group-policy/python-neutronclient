@@ -243,6 +243,8 @@ class Client(object):
     policy_action_path = "/grouppolicy/policy_actions/%s"
     policy_rules_path = "/grouppolicy/policy_rules"
     policy_rule_path = "/grouppolicy/policy_rules/%s"
+    contracts_path = "/grouppolicy/contracts"
+    contract_path = "/grouppolicy/contracts/%s"
 
     # API has no way to report plurals, so we have to hard code them
     EXTED_PLURALS = {'routers': 'router',
@@ -274,7 +276,8 @@ class Client(object):
                      'l3_policies': 'l3_policy',
                      'policy_classifiers': 'policy_classifier',
                      'policy_actions': 'policy_action',
-                     'policy_rules': 'policy_rule'
+                     'policy_rules': 'policy_rule',
+                     'contracts': 'contract',
                      }
     # 8192 Is the default max URI len for eventlet.wsgi.server
     MAX_URI_LEN = 8192
@@ -1412,6 +1415,33 @@ class Client(object):
     def delete_policy_rule(self, policy_rule):
         """Deletes the specified policy_rule."""
         return self.delete(self.policy_rule_path % (policy_rule))
+
+    @APIParamsCall
+    def list_contracts(self, retrieve_all=True, **_params):
+        """Fetches a list of all contracts for a tenant."""
+        # Pass filters in "params" argument to do_request
+        return self.list('contracts', self.contracts_path, retrieve_all,
+                         **_params)
+
+    @APIParamsCall
+    def show_contract(self, contract, **_params):
+        """Fetches information of a certain contract."""
+        return self.get(self.contract_path % (contract), params=_params)
+
+    @APIParamsCall
+    def create_contract(self, body=None):
+        """Creates a new contract."""
+        return self.post(self.contracts_path, body=body)
+
+    @APIParamsCall
+    def update_contract(self, contract, body=None):
+        """Updates a contract."""
+        return self.put(self.contract_path % (contract), body=body)
+
+    @APIParamsCall
+    def delete_contract(self, contract):
+        """Deletes the specified contract."""
+        return self.delete(self.contract_path % (contract))
 
     def __init__(self, **kwargs):
         """Initialize a new client for the Neutron v2.0 API."""
