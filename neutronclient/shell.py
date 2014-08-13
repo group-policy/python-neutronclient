@@ -63,6 +63,7 @@ from neutronclient.neutron.v2_0 import port
 from neutronclient.neutron.v2_0 import quota
 from neutronclient.neutron.v2_0 import router
 from neutronclient.neutron.v2_0 import securitygroup
+from neutronclient.neutron.v2_0 import servicechain
 from neutronclient.neutron.v2_0 import servicetype
 from neutronclient.neutron.v2_0 import subnet
 from neutronclient.neutron.v2_0.vpn import ikepolicy
@@ -237,6 +238,31 @@ COMMAND_V2 = {
     'firewall-create': firewall.CreateFirewall,
     'firewall-update': firewall.UpdateFirewall,
     'firewall-delete': firewall.DeleteFirewall,
+    'servicechain-node-list': servicechain.ListServiceChainNode,
+    'servicechain-node-show': servicechain.ShowServiceChainNode,
+    'servicechain-node-create': servicechain.CreateServiceChainNode,
+    'servicechain-node-delete': servicechain.DeleteServiceChainNode,
+    'servicechain-node-update': servicechain.UpdateServiceChainNode,
+    'servicechain-spec-list': servicechain.ListServiceChainSpec,
+    'servicechain-spec-show': servicechain.ShowServiceChainSpec,
+    'servicechain-spec-create': servicechain.CreateServiceChainSpec,
+    'servicechain-spec-delete': servicechain.DeleteServiceChainSpec,
+    'servicechain-spec-update': servicechain.UpdateServiceChainSpec,
+    'servicechain-instance-list': (
+        servicechain.ListServiceChainInstance
+    ),
+    'servicechain-instance-show': (
+        servicechain.ShowServiceChainInstance
+    ),
+    'servicechain-instance-create': (
+        servicechain.CreateServiceChainInstance
+    ),
+    'servicechain-instance-delete': (
+        servicechain.DeleteServiceChainInstance
+    ),
+    'servicechain-instance-update': (
+        servicechain.UpdateServiceChainInstance
+    ),
     'cisco-credential-list': credential.ListCredential,
     'cisco-credential-show': credential.ShowCredential,
     'cisco-credential-create': credential.CreateCredential,

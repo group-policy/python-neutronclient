@@ -223,7 +223,9 @@ class CLITestV20Base(base.BaseTestCase):
                                       'ipsecpolicy', 'metering_label',
                                       'metering_label_rule', 'net_partition',
                                       'policy_classifier', 'policy_rule',
-                                      'policy_action']
+                                      'policy_action',
+                                      'servicechain_spec', 'servicechain_node',
+                                      'servicechain_instance']
         if not cmd_resource:
             cmd_resource = resource
         if (resource in non_admin_status_resources):
