@@ -719,7 +719,6 @@ class UpdateContract(neutronV20.UpdateCommand):
 
     def args2body(self, parsed_args):
         body = {self.resource: {}, }
-
         if parsed_args.policy_rules:
             body[self.resource]['policy_rules'] = [
                 neutronV20.find_resourceid_by_name_or_id(
@@ -734,4 +733,7 @@ class UpdateContract(neutronV20.UpdateCommand):
                     'contract',
                     elem) for elem in parsed_args.child_contracts]
 
+        neutronV20.update_dict(parsed_args, body[self.resource],
+                               ['name', 'description', 'policy_rules',
+                                'child_contracts'])
         return body
