@@ -172,7 +172,6 @@ class CreateEndpointGroup(neutronV20.CreateCommand):
                     subnet)
                 parsed_args.subnets.remove(subnet)
                 parsed_args.subnets.append(subnet_id)
-
         neutronV20.update_dict(parsed_args, body[self.resource],
                                ['name', 'tenant_id', 'description',
                                 'provided_contracts', 'subnets',
@@ -719,13 +718,13 @@ class UpdateContract(neutronV20.UpdateCommand):
 
     def args2body(self, parsed_args):
         body = {self.resource: {}, }
-
         if parsed_args.policy_rules:
             body[self.resource]['policy_rules'] = [
                 neutronV20.find_resourceid_by_name_or_id(
                     self.get_client(),
                     'policy_rule',
                     elem) for elem in parsed_args.policy_rules]
+            parsed_args.policy_rules = body[self.resource]['policy_rules']
 
         if parsed_args.child_contracts:
             body[self.resource]['child_contracts'] = [
@@ -733,5 +732,8 @@ class UpdateContract(neutronV20.UpdateCommand):
                     self.get_client(),
                     'contract',
                     elem) for elem in parsed_args.child_contracts]
-
+            parsed_args.child_contracts = parsed_args.child_contracts
+        neutronV20.update_dict(parsed_args, body[self.resource],
+                               ['name', 'description', 'policy_rules',
+                                'child_contracts'])
         return body
