@@ -737,3 +737,72 @@ class UpdateContract(neutronV20.UpdateCommand):
                                ['name', 'description', 'policy_rules',
                                 'child_contracts'])
         return body
+
+
+class ListMember(neutronV20.ListCommand):
+    """List classifiers that belong to a given tenant."""
+
+    resource = 'member'
+    log = logging.getLogger(__name__ + '.member')
+    _formatters = {}
+    list_columns = ['id', 'name', 'status', 'task state', 'power state']
+    pagination_support = True
+    sorting_support = True
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--group',
+            help=_('Group to filter the members'))
+
+    def run(self, parsed_args):
+        from subprocess import call
+        call("nova list | awk '"
+             "/l2p_/{for (i=0; i<=10; i++) $(i)=$i;"
+             " NF=NF-2; print $0 }' | column -t", shell=True)
+
+
+class CreateMember(neutronV20.CreateCommand):
+    """Create a member for a given group."""
+
+    resource = 'member'
+    log = logging.getLogger(__name__ + '.CreateMember')
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--description',
+            help=_('Description of the member'))
+        parser.add_argument(
+            'name', metavar='NAME',
+            help=_('Name of member to create'))
+        parser.add_argument(
+            '--group',
+            help=_('Group to map the member'))
+
+    def run(self, parsed_args):
+        from subprocess import call
+        call("MEMBER=$(policy policy-target-create target --endpoint-group "
+             "" + parsed_args.group + " | awk \"/port_id/ {print \$4}\"); "
+             "nova boot --flavor m1.nano --image cirros-0.3.2-x86_64-uec "
+             "--nic port-id=$MEMBER " + parsed_args.name, shell=True)
+
+
+class ShowMember(neutronV20.ShowCommand):
+    """Show information of a given classifier."""
+
+    resource = 'member'
+    log = logging.getLogger(__name__ + '.ShowMember')
+
+    def run(self, parsed_args):
+        from subprocess import call
+        call('nova show ' + parsed_args.id, shell=True)
+
+
+class DeleteMember(neutronV20.DeleteCommand):
+    """Delete a given contract."""
+
+    resource = 'member'
+    log = logging.getLogger(__name__ + '.DeleteMember')
+
+    def run(self, parsed_args):
+        from subprocess import call
+        call('nova delete ' + parsed_args.id, shell=True)

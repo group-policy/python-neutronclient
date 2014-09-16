@@ -141,6 +141,10 @@ COMMAND_V2 = {
     'contract-update': gbp.UpdateContract,
     'contract-list': gbp.ListContract,
     'contract-show': gbp.ShowContract,
+    'member-create': gbp.CreateMember,
+    'member-list': gbp.ListMember,
+    'member-show': gbp.ShowMember,
+    'member-delete': gbp.DeleteMember,
 }
 
 COMMANDS = {'2.0': COMMAND_V2}
