@@ -757,8 +757,7 @@ class ListMember(neutronV20.ListCommand):
     def run(self, parsed_args):
         from subprocess import call
         call("nova list | awk '"
-             "/l2p_/{for (i=0; i<=10; i++) $(i)=$i;"
-             " NF=NF-2; print $0 }' | column -t", shell=True)
+             "/l2p_/'", shell=True)
 
 
 class CreateMember(neutronV20.CreateCommand):
